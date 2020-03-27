@@ -60,7 +60,10 @@ public class FlightController {
 	}
 
     @PutMapping(value = "/update/{flightId}")
-    public String updateFlightSubmit(@PathVariable("flightId") long flightId, @RequestParam(value = "destination", required = false) String destination, @RequestParam(value = "origin", required = false) String origin, @RequestParam(value = "time", required = false) Date time ) {
+    public String updateFlightSubmit(@PathVariable("flightId") long flightId, 
+    		@RequestParam(value = "destination", required = false) String destination, 
+    		@RequestParam(value = "origin", required = false) String origin, 
+    		@RequestParam(value = "time", required = false) Date time ) {
     	FlightModel flight = flightService.getFlightById(flightId);
     	if(flight.equals(null)) {
     		return "Couldn't find your flight";
