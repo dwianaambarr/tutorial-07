@@ -1,10 +1,7 @@
 package com.apap.tu07.controller;
 
-import java.util.ArrayList;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +17,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.apap.tu07.model.FlightModel;
+import com.apap.tu07.model.PilotModel;
 import com.apap.tu07.service.FlightService;
+import com.apap.tu07.service.PilotService;
 
 /**
  * FlightController
@@ -30,9 +29,15 @@ import com.apap.tu07.service.FlightService;
 public class FlightController {
     @Autowired
     private FlightService flightService;
+    
+    @Autowired
+    private PilotService pilotService;
 
-    @PostMapping(value = "/add")
-    public FlightModel addFlightSubmit(@RequestBody FlightModel flight) {
+    @PostMapping(value = "/add/{licenseNumber}")
+    public FlightModel addFlightSubmit(@PathVariable(value = "licenseNumber") String licenseNumber,
+    		@RequestBody FlightModel flight, Model model) {
+    	PilotModel pilot = pilotService.getPilotDetailByLicenseNumber(licenseNumber).get();
+		flight.setPilot(pilot);
     	return flightService.addFlight(flight);
     }
 
